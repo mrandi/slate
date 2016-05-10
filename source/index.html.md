@@ -1,14 +1,13 @@
 ---
-title: API Reference
+title: Fullstop API
 
 language_tabs:
   - shell
-  - ruby
-  - python
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
+  - <a href='https://github.com/zalando-stups/fullstop'>Fullstop</a>
+  - <a href='https://docs.stups.io/en/latest/components/fullstop.html'>Documentation</a>
+  - <a href='https://stups.io/'>STUPS.io</a>
 
 includes:
   - errors
@@ -18,66 +17,60 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Fullstop API! You can use our API to access Fullstop API endpoints, which can get information on violations, lifecycle, and useful informations in our database.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We have language bindings in Shell! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+This API documentation page was created with [Slate](https://github.com/tripit/slate)
+based on [Fullstop](https://github.com/zalando-stups/fullstop-slate). Feel free to edit it and use it as a base for your own API's documentation.
 
 # Authentication
 
 > To authorize, use this code:
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+  -H "Authorization: Barer meowmeowmeow"
 ```
 
 > Make sure to replace `meowmeowmeow` with your API key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Fullstop uses Oauth2 tokens to allow access to the API.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Fullstop expects Oauth2 tokens to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+`Authorization: Barer meowmeowmeow`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>meowmeowmeow</code> with your personal Oauth2 token.
 </aside>
 
-# Kittens
+# Fullstop
 
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+## Put instance log in S3
 
 ```shell
-curl "http://example.com/api/kittens"
+curl "http://example.com/api/instance-logs"
+  -H "Authorization: meowmeowmeow"
+```
+> The above command need a JSON structured body like this:
+
+```json
+{
+  "accountId": "string",
+  "instanceBootTime": "2016-05-10T09:48:34.309Z",
+  "instanceId": "string",
+  "logData": "string",
+  "logType": "USER_DATA",
+  "region": "string"
+}
+```
+
+## Get All violations
+
+```shell
+curl "http://example.com/api/violations"
   -H "Authorization: meowmeowmeow"
 ```
 
@@ -86,57 +79,73 @@ curl "http://example.com/api/kittens"
 ```json
 [
   {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+    "accountId": "string",
+    "applicationId": "string",
+    "applicationVersionId": "string",
+    "comment": "string",
+    "created": "date-time",
+    "createdBy": "string",
+    "eventId": "string",
+    "id": 0,
+    "instanceId": "string",
+    "lastModified": "date-time",
+    "lastModifiedBy": "string",
+    "metaInfo": {},
+    "pluginFullyQualifiedClassName": "string",
+    "region": "string",
+    "ruleID": 0,
+    "username": "string",
+    "version": 0,
+    "violationType": {
+      "auditRelevant": true,
+      "created": "date-time",
+      "createdBy": "string",
+      "helpText": "string",
+      "id": "string",
+      "lastModified": "date-time",
+      "lastModifiedBy": "string",
+      "priority": 0,
+      "title": "string",
+      "version": 0,
+      "violationSeverity": 0
+    }
   }
 ]
 ```
 
-This endpoint retrieves all kittens.
+This endpoint retrieves all violations.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET http://example.com/api/violations`
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Type | Default | Description
+--------- | ---- | ------- | -----------
+accounts | Array[string] | false | Include only violations in these accounts.
+from | date-time | false | Include only violations that happened after this point in time
+to | date-time | false | Include only violations that happened up to this point in time
+last-violation | long | false | Include only violations after the one with this id
+checked | boolean | false | Include only violations where checked field equals this value (i.e. resolved violations)
+severity | integer | false | Include only violations with a certain severity
+priority | integer | false | Include only violations with a certain priority
+audit-relevant | boolean | false | Include only violations that are audit relevant
+type | string | false | Include only violations with a certain type
+types | Array[string] | false | Include only violations with a certain types
+application-ids | Array[string] | false | Include only violations with a certain application name
+application-version-ids | Array[string] | false | nclude only violations with a certain application version
+whitelisted | boolean | false | show also whitelisted vioaltions
+pageable | pageable | false | select page
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+Remember — to add always your Oauth2 token!
 </aside>
 
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+## Get a Specific Violation
 
 ```shell
-curl "http://example.com/api/kittens/2"
+curl "http://example.com/api/violations/2"
   -H "Authorization: meowmeowmeow"
 ```
 
@@ -144,25 +153,47 @@ curl "http://example.com/api/kittens/2"
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "accountId": "string",
+  "applicationId": "string",
+  "applicationVersionId": "string",
+  "comment": "string",
+  "created": "date-time",
+  "createdBy": "string",
+  "eventId": "string",
+  "id": 0,
+  "instanceId": "string",
+  "lastModified": "date-time",
+  "lastModifiedBy": "string",
+  "metaInfo": {},
+  "pluginFullyQualifiedClassName": "string",
+  "region": "string",
+  "ruleID": 0,
+  "username": "string",
+  "version": 0,
+  "violationType": {
+    "auditRelevant": true,
+    "created": "date-time",
+    "createdBy": "string",
+    "helpText": "string",
+    "id": "string",
+    "lastModified": "date-time",
+    "lastModifiedBy": "string",
+    "priority": 0,
+    "title": "string",
+    "version": 0,
+    "violationSeverity": 0
+  }
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This endpoint retrieves a specific violation.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET http://example.com/api/violations/<ID>`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to retrieve
-
+ID | The ID of the violation to retrieve
