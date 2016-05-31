@@ -133,19 +133,18 @@ based on <a href="https://github.com/zalando-stups/fullstop-slate">Fullstop</a>.
 <p>To authorize, use this code:</p>
 </blockquote>
 <pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: Barer meowmeowmeow"</span>
+curl -X GET -H <span class="s2">"Authorization: Bearer </span><span class="k">$(</span>zign token uid<span class="k">)</span><span class="s2">"</span> --header <span class="s2">"Accept: application/json"</span> <span class="s2">"api_endpoint_here"</span>
 </code></pre>
 
 <blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
+<p>Make sure to use zign or replace <code class="prettyprint">$(zign token uid)</code> with your Oauth2 token.</p>
 </blockquote>
 
 <p>Fullstop uses Oauth2 tokens to allow access to the API.</p>
 
 <p>Fullstop expects Oauth2 tokens to be included in all API requests to the server in a header that looks like the following:</p>
 
-<p><code class="prettyprint">Authorization: Barer meowmeowmeow</code></p>
+<p><code class="prettyprint">Authorization: Barer $(zign token uid)</code></p>
 
 <aside class="notice">
 You must replace <code>meowmeowmeow</code> with your personal Oauth2 token.
@@ -154,8 +153,7 @@ You must replace <code>meowmeowmeow</code> with your personal Oauth2 token.
 <h1 id="fullstop">Fullstop</h1>
 
 <h2 id="put-instance-log-in-s3">Put instance log in S3</h2>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/instance-logs"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+<pre class="highlight shell"><code>curl -X GET -H <span class="s2">"Authorization: Bearer </span><span class="k">$(</span>zign token uid<span class="k">)</span><span class="s2">"</span> --header <span class="s2">"Accept: application/json"</span> <span class="s2">"http://example.com/api/instance-logs"</span>
 </code></pre>
 
 <blockquote>
@@ -172,8 +170,7 @@ You must replace <code>meowmeowmeow</code> with your personal Oauth2 token.
 </span></code></pre>
 
 <h2 id="get-all-violations">Get All violations</h2>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/violations"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+<pre class="highlight shell"><code>curl -X GET -H <span class="s2">"Authorization: Bearer </span><span class="k">$(</span>zign token uid<span class="k">)</span><span class="s2">"</span> --header <span class="s2">"Accept: application/json"</span> <span class="s2">"http://example.com/api/violations"</span>
 </code></pre>
 
 <blockquote>
@@ -322,8 +319,7 @@ Remember — to add always your Oauth2 token!
 </aside>
 
 <h2 id="get-a-specific-violation">Get a Specific Violation</h2>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/violations/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+<pre class="highlight shell"><code>curl -X GET -H <span class="s2">"Authorization: Bearer </span><span class="k">$(</span>zign token uid<span class="k">)</span><span class="s2">"</span> --header <span class="s2">"Accept: application/json"</span> <span class="s2">"http://example.com/api/violations/2"</span>
 </code></pre>
 
 <blockquote>
