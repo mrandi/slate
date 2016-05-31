@@ -30,17 +30,16 @@ based on [Fullstop](https://github.com/zalando-stups/fullstop-slate). Feel free 
 
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: Barer meowmeowmeow"
+curl -X GET -H "Authorization: Bearer $(zign token uid)" --header "Accept: application/json" "api_endpoint_here"
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to use zign or replace `$(zign token uid)` with your Oauth2 token.
 
 Fullstop uses Oauth2 tokens to allow access to the API.
 
 Fullstop expects Oauth2 tokens to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: Barer meowmeowmeow`
+`Authorization: Barer $(zign token uid)`
 
 <aside class="notice">
 You must replace <code>meowmeowmeow</code> with your personal Oauth2 token.
@@ -51,8 +50,7 @@ You must replace <code>meowmeowmeow</code> with your personal Oauth2 token.
 ## Put instance log in S3
 
 ```shell
-curl "http://example.com/api/instance-logs"
-  -H "Authorization: meowmeowmeow"
+curl -X GET -H "Authorization: Bearer $(zign token uid)" --header "Accept: application/json" "http://example.com/api/instance-logs"
 ```
 > The above command need a JSON structured body like this:
 
@@ -70,8 +68,7 @@ curl "http://example.com/api/instance-logs"
 ## Get All violations
 
 ```shell
-curl "http://example.com/api/violations"
-  -H "Authorization: meowmeowmeow"
+curl -X GET -H "Authorization: Bearer $(zign token uid)" --header "Accept: application/json" "http://example.com/api/violations"
 ```
 
 > The above command returns JSON structured like this:
@@ -145,8 +142,7 @@ Remember — to add always your Oauth2 token!
 ## Get a Specific Violation
 
 ```shell
-curl "http://example.com/api/violations/2"
-  -H "Authorization: meowmeowmeow"
+curl -X GET -H "Authorization: Bearer $(zign token uid)" --header "Accept: application/json" "http://example.com/api/violations/2"
 ```
 
 > The above command returns JSON structured like this:
